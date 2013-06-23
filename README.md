@@ -41,11 +41,16 @@ Or install it yourself as:
         price: 5
      }]      
 
-### calculate average prices on postings
-#### example
+### Data calculations
+#### average price
 
     craigslist = CraigsList.new
     craigslist.search_miami_for "white aligator shoes".average_price #=> 200
+
+#### median price
+
+    craigslist = CraigsList.new
+    craigslist.search_miami_for "white aligator shoes".median_price #=> 200
 
 ### You can search most valid craigslist cities
 #### example

@@ -134,5 +134,41 @@ describe CraigsList do
     end
 
   end
+    describe "Array#median_price" do
+    let(:craigslist) { CraigsList.new }
+
+    it "returns the median price for a search with multiple items" do
+      craigslist.stub(:search_denver_for).and_return([{price: "1"} , {price: "1000"} , {price: "5"}])
+      craigslist.search_denver_for("uranium").median_price.should == 5
+    end
+
+    it "returns 0 for search with no results" do
+      craigslist.stub(:search_denver_for).and_return([])
+         craigslist.search_denver_for("uranium").median_price.should == 0
+    end
+   
+    it "returns median for a search with two items" do
+      craigslist.stub(:search_denver_for).and_return([{price: "8"} , {price: "12"} ])
+   
+      craigslist.search_denver_for("uranium").median_price.should == 10
+    end
+
+    it "returns the price for a search with one item" do
+      craigslist.stub(:search_denver_for).and_return([{price: 1}])
+   
+      craigslist.search_denver_for("uranium").median_price.should == 1
+    end
+
+    it "returns the average of the two middle numbers for an even array" do
+      craigslist.stub(:search_denver_for).and_return([{price: "1"} , {price: "5"} , {price: "15"} , {price: "10000"}])
+      craigslist.search_denver_for("uranium").median_price.should == 10
+    end
+    
+    it "discards nil prices" do
+      craigslist.stub(:search_denver_for).and_return([{price: 1} , {price: nil}])
+   
+      craigslist.search_denver_for("uranium").median_price.should == 1
+    end
+  end
 end
 

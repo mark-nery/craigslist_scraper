@@ -38,11 +38,33 @@ class CraigsList
 
   Array.class_eval do
     def average_price
+      reject! { |item| item[:price] == nil }
       return 0 if empty?
-      
-      self.reject! { |item| item[:price] == nil }
 
-      flat_map { |item| [item[:price]] }.map { |price| price.to_i }.reduce(:+) / self.size 
+      price_array.reduce(:+) / size 
+    end
+
+    def median_price
+      reject! { |item| item[:price] == nil }
+
+      return 0 if empty?
+      return first[:price].to_i if size == 1
+
+      if size.odd?
+        price_array.sort[middle]
+      else
+        price_array.sort[middle - 1.. middle].reduce(:+) / 2
+      end
+    end
+
+    private
+
+    def middle
+      size / 2
+    end
+
+    def price_array
+      flat_map { |item| [item[:price]] }.map { |price| price.to_i }
     end
   end
   
