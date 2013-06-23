@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["marknery@gmail.com"]
   spec.description   = %q{a gem that scrapes craigslist data}
   spec.summary       = %q{a gem that scrapes craigslist data}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/mark-nery/craigslist_scraper"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
