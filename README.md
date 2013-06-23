@@ -50,7 +50,7 @@ Or install it yourself as:
 #### median price
 
     craigslist = CraigsList.new
-    craigslist.search_miami_for "white aligator shoes".median_price #=> 200
+    craigslist.search_losangeles_for "pretentious handbag".median_price #=> 700
 
 ### You can search most valid craigslist cities
 #### example
