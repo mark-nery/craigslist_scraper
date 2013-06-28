@@ -7,24 +7,34 @@ class CraigsList
   include Cities
   
   VALID_FIELDS = [:query, :srchType]
-
+  
+  ERRORS = [OpenURI::HTTPError]
+  
   def search(options ={})
     if options[:title_only]
       options.merge!(srchType: "T")
       options.delete(:title_only)
     end
     uri = "http://#{options[:city]}.craigslist.org/search/sss?#{to_query(options)}"
-    
-    doc = Nokogiri::HTML(open(uri))
 
-    doc.css('p.row').flat_map do |link|
-      [
-        data_id: link["data-pid"] ,
-        description:  link.css("a").text,
-        url: "http://#{options[:city]}.craigslist.org#{link.css("a")[0]["href"]}",
-        price: extract_price(link.css("span.price").text)
-      ]
+    begin
+      doc = Nokogiri::HTML(open(uri))
+
+      doc.css('p.row').flat_map do |link|
+        [
+         data_id: link["data-pid"] ,
+         description:  link.css("a").text,
+         url: "http://#{options[:city]}.craigslist.org#{link.css("a")[0]["href"]}",
+         price: extract_price(link.css("span.price").text)
+        ]
+      end
+    rescue *ERRORS => e
+      [{error: "error opening city: #{options[:city]}"} ]
     end
+  end
+
+  def cities
+    Cities::CITIES
   end
   
   def method_missing(method,*args)
@@ -36,6 +46,12 @@ class CraigsList
     search(params)
   end
 
+  def search_all_cities_for(query)
+    Cities::CITIES.flat_map do |city|
+      search(city: city , query: query)
+    end
+  end
+  
   Array.class_eval do
     def average_price
       reject! { |item| item[:price] == nil }
