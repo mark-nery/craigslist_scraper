@@ -1,5 +1,6 @@
 require "craigslist_scraper/version"
+require "craigslist_scraper/craigslist"
 
 module CraigslistScraper
-  # Your code goes here...
+  autoload :CraigsList, 'craigslist_scraper/craigslist'
 end
