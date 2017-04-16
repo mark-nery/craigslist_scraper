@@ -2,7 +2,7 @@
 
 A gem to scrape craiglist data , use at own risk.  
 
-####Warning
+#### Warning
 
 This gem does not work if hosted on heroku or ec2 , it appears [craiglist blocks requests coming from them.](http://stackoverflow.com/questions/14328955/http-get-on-craigslist-blocked)
 
